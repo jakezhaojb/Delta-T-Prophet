@@ -9,12 +9,13 @@ from dpark import DparkContext
 from process import *
 
 HOST = 'http://thegradcafe.com/survey/index.php?q='
-OUTPUT = '' # TODO
-SUB = ''
-LEVEL = ''
+OUTPUT = '/home/junbo/Delta_T/tmp'  # TODO
+SUB = 'CS'
+LEVEL = 'MS'
 START_PAGE = 1
-END_PAGE = 100
+END_PAGE = 10
 DPARK_USAGE = False
+
 
 def proc_glob():
     """Process global objects"""
@@ -34,6 +35,8 @@ def proc_glob():
             else:
                 pass
     OUTPUT = OUTPUT if OUTPUT.endswith('/') else OUTPUT + '/'
+    if not os.path.isdir(OUTPUT):
+        os.mkdir(OUTPUT)
     # SUB TODO
     assert SUB in ['CS', 'EE', 'CE', 'cs', 'ee', 'ce']
     if SUB is 'CS' or 'cs':
@@ -65,11 +68,11 @@ def proc_glob():
     
 
 def main_serial():
-    # TODO DEBUG
-    proc_glob()
+    proc_glob()  # TODO, strange BUG: UnboundLocalError: "local variable 'OUTPUT' referenced before assignment"
     recd = []
     num = 0
     for i in range(START_PAGE, END_PAGE):
+        import pdb; pdb.set_trace()
         print 'Procesing page %i' % i
         host = HOST + SUB + '&=a&o=&p=' + str(i)
         cont = urllib2.urlopen(host).read()
@@ -91,7 +94,7 @@ def main_paralz():
     # TODO
     page = range(STRAT_PAGE, END_PAGE)
     dpark_ctx = DparkContext('mesos')
-    def map_iter(pg):
+    #def map_iter(pg):
         # TODO
 
 

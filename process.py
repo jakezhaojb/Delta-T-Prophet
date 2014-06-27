@@ -51,7 +51,7 @@ def proc_univ_name(rec):
             pass
         else:
             # other univs
-            matches = [reduce((lamdba x, y: x[0], x[1] + '\n' + y[1]), matches)]
+            matches = [reduce((lambda x, y: x[0], x[1] + '\n' + y[1]), matches)]
         assert len(matches) == 1
         rec__.extend(matches)
     return rec__

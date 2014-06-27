@@ -65,6 +65,7 @@ def proc_glob():
     
 
 def main_serial():
+    # TODO DEBUG
     proc_glob()
     recd = []
     num = 0
@@ -75,8 +76,14 @@ def main_serial():
         # TODO time control
         recd.extend(proc_page(cont))
         print 'Process page %i done.' % i
-    # FILE IO 
-    # TODO
+    proc_univ_name(recd) # union same keys across pages
+    # file IO
+    for recd_elem in recd:
+        fn_out = open(OUTPUT + recd_elem[0], 'w')
+        fn_out.write(recd_elem[1])
+        fn_out.close()
+        print 'Finish file %s' % fn_out.name
+    print 'Done.'
     
 
 def main_paralz():

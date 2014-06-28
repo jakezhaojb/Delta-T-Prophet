@@ -7,9 +7,10 @@ import urllib2
 import re
 from dpark import DparkContext
 from process import *
+import shutil
 
 HOST = 'http://thegradcafe.com/survey/index.php?q='
-OUTPUT = '/home/junbo/Delta_T/tmp'  # TODO
+OUTPUT = '/home/junbo/Delta_T/tmp'
 SUB = 'CS'
 LEVEL = 'MS'
 START_PAGE = 1
@@ -19,6 +20,7 @@ DPARK_USAGE = False
 
 def proc_glob():
     """Process global objects"""
+    global OUTPUT, SUB, LEVEL, START_PAGE, END_PAGE
     assert HOST.find('http://thegradcafe.com/survey/index.php?q=') is 0
     # OUTPUT
     if os.path.isdir(OUTPUT) or os.path.isfile(OUTPUT):
@@ -27,7 +29,7 @@ def proc_glob():
             key = raw_input()
             if key is 'Y':
                 print 'Start crawling.'
-                os.remove(OUTPUT)
+                shutil.rmtree(OUTPUT)
                 break
             elif key is 'n':
                 print 'Stop crawling.'
@@ -35,8 +37,7 @@ def proc_glob():
             else:
                 pass
     OUTPUT = OUTPUT if OUTPUT.endswith('/') else OUTPUT + '/'
-    if not os.path.isdir(OUTPUT):
-        os.mkdir(OUTPUT)
+    os.mkdir(OUTPUT)
     # SUB TODO
     assert SUB in ['CS', 'EE', 'CE', 'cs', 'ee', 'ce']
     if SUB is 'CS' or 'cs':
@@ -72,25 +73,25 @@ def main_serial():
     recd = []
     num = 0
     for i in range(START_PAGE, END_PAGE):
-        import pdb; pdb.set_trace()
         print 'Procesing page %i' % i
         host = HOST + SUB + '&=a&o=&p=' + str(i)
         cont = urllib2.urlopen(host).read()
         # TODO time control
         recd.extend(proc_page(cont))
         print 'Process page %i done.' % i
-    proc_univ_name(recd) # union same keys across pages
+    recd = proc_univ_name(recd)  # union same keys across pages
     # file IO
     for recd_elem in recd:
         fn_out = open(OUTPUT + recd_elem[0], 'w')
         fn_out.write(recd_elem[1])
+        fn_out.write('\n')
         fn_out.close()
         print 'Finish file %s' % fn_out.name
     print 'Done.'
-    
+
 
 def main_paralz():
-    assert DPARK_USAGE # Use dpark to make some RDDs
+    assert DPARK_USAGE  # Use dpark to make some RDDs
     # TODO
     page = range(STRAT_PAGE, END_PAGE)
     dpark_ctx = DparkContext('mesos')

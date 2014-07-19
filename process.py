@@ -49,7 +49,7 @@ def proc_univ_name(rec):
     rec__ = []  # in return
     for rec_elem in rec_:
         matches = [x for x in rec_ if is_same_univ(x[0], rec_elem[0])]
-        # TODO, efficiency consideration.
+        # TODO, efficiency?
         #map(lambda x: rec_.remove(x), matches) # remove processed records
         if len(matches) == 1:
             # No other univs

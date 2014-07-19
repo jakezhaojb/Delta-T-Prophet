@@ -14,8 +14,8 @@ OUTPUT = '/home/junbo/Delta_T/tmp'
 SUB = 'CS'
 LEVEL = 'MS'
 START_PAGE = 1
-END_PAGE = 10
-DPARK_USAGE = False
+END_PAGE = 700
+DPARK_ON = False
 
 
 def proc_glob():
@@ -68,39 +68,36 @@ def proc_glob():
         END_PAGE = -1
     
 
-def main_serial():
-    proc_glob()  # TODO, strange BUG: UnboundLocalError: "local variable 'OUTPUT' referenced before assignment"
-    recd = []
-    num = 0
-    for i in range(START_PAGE, END_PAGE):
-        print 'Procesing page %i' % i
-        host = HOST + SUB + '&=a&o=&p=' + str(i)
-        cont = urllib2.urlopen(host).read()
-        # TODO time control
-        recd.extend(proc_page(cont))
-        print 'Process page %i done.' % i
-    recd = proc_univ_name(recd)  # union same keys across pages
-    # file IO
-    for recd_elem in recd:
-        fn_out = open(OUTPUT + recd_elem[0], 'w')
-        fn_out.write(recd_elem[1])
-        fn_out.write('\n')
-        fn_out.close()
-        print 'Finish file %s' % fn_out.name
-    print 'Done.'
-
-
-def main_paralz():
-    assert DPARK_USAGE  # Use dpark to make some RDDs
-    # TODO
-    page = range(STRAT_PAGE, END_PAGE)
-    dpark_ctx = DparkContext('mesos')
-    #def map_iter(pg):
+def main():
+    if DPARK_ON:
+        print 'Using dpark to speed up.'
+        page = range(STRAT_PAGE, END_PAGE)
+        dpark_ctx = DparkContext('mesos')
         # TODO
 
 
-if __name__ == '__main__':
-    if DPARK_USAGE:
-        main_paralz()
     else:
-        main_serial()
+        # TODO, LEVEL AND TIME
+        proc_glob()  # TODO, strange BUG: UnboundLocalError: "local variable 'OUTPUT' referenced before assignment"
+        recd = []
+        num = 0
+        for i in range(START_PAGE, END_PAGE):
+            print 'Procesing page %i' % i
+            host = HOST + SUB + '&=a&o=&p=' + str(i)
+            cont = urllib2.urlopen(host).read()
+            # TODO time control
+            recd.extend(proc_page(cont))
+            print 'Process page %i done.' % i
+        recd = proc_univ_name(recd)  # union same keys across pages
+        # file IO
+        for recd_elem in recd:
+            fn_out = open(OUTPUT + recd_elem[0], 'w')
+            fn_out.write(recd_elem[1])
+            fn_out.write('\n')
+            fn_out.close()
+            print 'Finish file %s' % fn_out.name
+
+    print 'Done.'
+
+if __name__ == '__main__':
+    main()

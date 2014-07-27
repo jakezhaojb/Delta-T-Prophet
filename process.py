@@ -6,21 +6,40 @@ from copy import copy
 
 GRE_pat = re.compile('\d{3}/\d{3}/\d\.\d{2}')
 GPA_pat = re.compile('Undergrad GPA</strong>: \d\.\d{2}')
+TERM_pat = re.compile('([FS]\d\d)')
+DEBUG = False
 
 
 def proc_substr(substr):
+    # TODO the following regex is too ugly, optimize it!
     assert isinstance(substr, str)
+    if DEBUG:
+        import pdb; pdb.set_trace()
+        print substr
+    # university name
     univ_name = substr[:substr.find('</td>')]
+    # level applied
+    level = 'MS' if 'Masters' in substr[:substr.find('class=\"d')] else 'PhD'
+    # term applied
+    term_rec = re.findall(TERM_pat, substr)[0]
+    # time notified
+    substr_time = substr[substr.find('via'): substr.find('<a class="extinfo"')]
+    time_rec = substr_time.split()[-2:]
+    time_rec = '/'.join(time_rec)
+    # GRE general
     gre = GRE_pat.findall(substr)
+    # GPA
     gpa = GPA_pat.findall(substr)
     assert gre and gpa
+    # Accepted or Declined
     isacc = bool(substr.find('class=\"dAccepted\">Accepted') != -1)
     isrej = bool(substr.find('class=\"dRejected\">Rejected') != -1)
     assert isacc or isrej
     assert isacc ^ isrej  # xor
     apl_res = 1 if isacc else 0
     # key-value format
-    return univ_name, ','.join([gre[0], gpa[0][-4:], str(apl_res)])
+    return univ_name, ','.join([gre[0], gpa[0][-4:], level,
+                                term_rec, time_rec, str(apl_res)])
 
 
 def proc_page(page_str):

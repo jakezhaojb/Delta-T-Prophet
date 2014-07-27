@@ -12,15 +12,14 @@ import shutil
 HOST = 'http://thegradcafe.com/survey/index.php?q='
 OUTPUT = '/home/junbo/Delta_T/tmp'
 SUB = 'CS'
-LEVEL = 'MS'
 START_PAGE = 1
-END_PAGE = 700
+END_PAGE = 50
 DPARK_ON = False
 
 
 def proc_glob():
     """Process global objects"""
-    global OUTPUT, SUB, LEVEL, START_PAGE, END_PAGE
+    global OUTPUT, SUB, START_PAGE, END_PAGE
     assert HOST.find('http://thegradcafe.com/survey/index.php?q=') is 0
     # OUTPUT
     if os.path.isdir(OUTPUT) or os.path.isfile(OUTPUT):
@@ -49,14 +48,6 @@ def proc_glob():
     else:
         SUB = 'computer+engineering'
         print 'Crawling Computer Engineering.'
-    # LEVEL
-    #assert LEVEL in ['MS', 'ms', 'PhD', 'PHD', 'phd']
-    if LEVEL in ['MS', 'ms']:
-        print 'Crawling MS programs.'
-    elif LEVEL in ['PhD', 'PHD', 'phd']:
-        print 'Crawling PhD programs.'
-    else:
-        sys.exit(-1)
     # PAGE
     try:
         assert START_PAGE <= END_PAGE
@@ -66,7 +57,7 @@ def proc_glob():
         print 'Pages setting failed.'
         START_PAGE = 1
         END_PAGE = -1
-    
+
 
 def main():
     if DPARK_ON:
@@ -77,12 +68,10 @@ def main():
 
 
     else:
-        # TODO, LEVEL AND TIME
         proc_glob()  # TODO, strange BUG: UnboundLocalError: "local variable 'OUTPUT' referenced before assignment"
         recd = []
         num = 0
         for i in range(START_PAGE, END_PAGE):
-            print 'Procesing page %i' % i
             host = HOST + SUB + '&=a&o=&p=' + str(i)
             cont = urllib2.urlopen(host).read()
             # TODO time control

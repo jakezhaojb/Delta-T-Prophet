@@ -17,7 +17,7 @@ python 2.7.5 is recommended and python 3 will not be compatible.<br />
 
 File format
 ---------------
-> 163/169/5.00,3.75,MS,F14,Mar/2014,1    
+e.g "163/169/5.00,3.75,MS,F14,Mar/2014,1"     
 ###### Take above two lines as examples, both of which can be splited into several sub-string:     
     163/169/5.00 denotes GRE General test, which is indexed by Verbal/Quantitative/A-Writing    
     3.75 is Undergraduted GPA supplied by applicants     

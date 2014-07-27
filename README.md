@@ -17,4 +17,11 @@ python 2.7.5 is recommended and python 3 will not be compatible.<br />
 
 File format
 ---------------
-
+> 163/169/5.00,3.75,MS,F14,Mar/2014,1    
+###### Take above two lines as examples, both of which can be splited into several sub-string:     
+    163/169/5.00 denotes GRE General test, which is indexed by Verbal/Quantitative/A-Writing    
+    3.75 is Undergraduted GPA supplied by applicants     
+    MS or PhD is the level applied    
+    F14 is the abbreviation for Fall 2014, and 'S' will be Spring    
+    Mar/2014 is the date applicants are notified    
+    1 can be seen as a boolearn variable. True will be Accepted and False Rejected.

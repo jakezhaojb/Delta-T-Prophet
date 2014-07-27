@@ -13,7 +13,7 @@ HOST = 'http://thegradcafe.com/survey/index.php?q='
 OUTPUT = '/home/junbo/Delta_T/CS'
 SUB = 'CS'
 START_PAGE = 1
-END_PAGE = 700
+END_PAGE = 70
 DPARK_ON = False
 
 

@@ -83,5 +83,42 @@ def proc_univ_name(rec):
 
 
 def is_same_univ(key1, key2):
-    # TODO, form a large table
-    return key1 == key2
+    if is_same_string(key1, key2):
+        return True
+    # brackets
+    pat_bracket = re.compile('\([\w\ ]*\)')
+    key1 = re.sub(pat_bracket, '', key1)
+    key2 = re.sub(pat_bracket, '', key2)
+    if is_same_string(key1, key2):
+        return True
+    # symbols
+    pat_symbol = re.compile('[^\w\ ]')
+    key1 = re.sub(pat_symbol, '', key1)
+    key2 = re.sub(pat_symbol, '', key2)
+    if is_same_string(key1, key2):
+        return True
+    # junk words, like: of, at ...
+    jword = ['university', 'of', 'at']
+    for jword_elem in jword:
+        _jword_elem = '\\b' + jword_elem + '\\b'
+        pat_jword = re.compile(_jword_elem)
+        key1 = key1.lower()
+        key2 = key2.lower()
+        key1 = re.sub(pat_jword, '', key1)
+        key2 = re.sub(pat_jword, '', key2)
+    if is_same_string(key1, key2):
+        return True
+    # all-else
+    return False
+
+
+def is_same_string(str1, str2):
+    assert isinstance(str1, str) and isinstance(str2, str)
+    if str1 == str2:
+        return True
+    else:
+        str1_ = str1.split()
+        str2_ = str2.split()
+        str1__ = ''.join(str1_)
+        str2__ = ''.join(str2_)
+        return str1__.lower() == str2__.lower()

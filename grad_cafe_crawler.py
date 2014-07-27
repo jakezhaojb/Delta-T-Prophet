@@ -10,7 +10,7 @@ from process import *
 import shutil
 
 HOST = 'http://thegradcafe.com/survey/index.php?q='
-OUTPUT = '/home/junbo/Delta_T/tmp'
+OUTPUT = '/home/junbo/Delta_T/CS'
 SUB = 'CS'
 START_PAGE = 1
 END_PAGE = 50
@@ -85,7 +85,6 @@ def main():
             fn_out.write('\n')
             fn_out.close()
             print 'Finish file %s' % fn_out.name
-
     print 'Done.'
 
 if __name__ == '__main__':

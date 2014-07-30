@@ -10,11 +10,14 @@ from process import *
 import shutil
 
 HOST = 'http://thegradcafe.com/survey/index.php?q='
-OUTPUT = '/home/junbo/Delta_T/CS'
 SUB = 'CS'
 START_PAGE = 1
-END_PAGE = 70
+END_PAGE = 7
 DPARK_ON = False
+
+# About path
+PATH = os.path.dirname(os.path.abspath(__file__))
+OUTPUT = os.path.join(PATH, SUB+'.gradcafe')
 
 
 def proc_glob():

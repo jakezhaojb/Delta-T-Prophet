@@ -1,0 +1,8 @@
+*.pdf
+*.log
+*.pyc
+*.synctex.gz
+*.jpg.zip
+on_SNS/616/page-\w.jpg
+*.out
+*.aux

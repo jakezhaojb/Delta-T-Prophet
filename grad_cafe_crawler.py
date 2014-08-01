@@ -17,7 +17,7 @@ DPARK_ON = False
 
 # About path
 PATH = os.path.dirname(os.path.abspath(__file__))
-OUTPUT = os.path.join(PATH, SUB+'.gradcafe')
+OUTPUT = os.path.join(PATH, 'dataset', SUB+'.gradcafe')
 
 
 def proc_glob():

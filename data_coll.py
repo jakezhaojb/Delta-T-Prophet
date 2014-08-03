@@ -4,10 +4,10 @@
 import os
 import sys
 
-INPUT_PATH = 'dataset'
+INPUT_PATH = 'dataset/CS.gradcafe'
 INPUT_PATH = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), INPUT_PATH)
-OUTPUT_PATH = ''
+OUTPUT_PATH = '233'
 
 
 def main():
@@ -35,7 +35,20 @@ def main():
                 continue
     # Start.
     print "Start collection."
-    # TODO
+    files_path = os.listdir(INPUT_PATH)
+    files_path = filter(lambda x: not x.startswith('.'), files_path)
+    output_file = open(OUTPUT_PATH, 'w')
+    for file_elem in files_path:
+        file_elem_abspath = os.path.join(INPUT_PATH, file_elem)
+        if not os.path.isfile(file_elem_abspath):
+            continue
+        input_file = open(file_elem_abspath, 'r')
+        ln = input_file.readlines()
+        ln = map(lambda x: file_elem + ',' + x, ln)
+        output_file.writelines(ln)
+        input_file.close()
+    output_file.close()
+    print 'done.'
 
 
 if __name__ == '__main__':

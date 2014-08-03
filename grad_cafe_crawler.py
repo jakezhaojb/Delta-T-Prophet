@@ -10,9 +10,9 @@ from process import *
 import shutil
 
 HOST = 'http://thegradcafe.com/survey/index.php?q='
-SUB = 'CS'
+SUB = 'EE'
 START_PAGE = 1
-END_PAGE = 7
+END_PAGE = 10
 DPARK_ON = False
 
 # About path
@@ -42,10 +42,10 @@ def proc_glob():
     os.mkdir(OUTPUT)
     # SUB TODO
     assert SUB in ['CS', 'EE', 'CE', 'cs', 'ee', 'ce']
-    if SUB is 'CS' or 'cs':
+    if SUB.upper() == 'CS':
         SUB = 'computer+science'
         print 'Crawling Computer Science.'
-    elif SUB is 'EE' or 'ee':
+    elif SUB.upper() == 'EE':
         SUB = 'electrical+engineering'
         print 'Crawling Electrical Engineering.'
     else:
